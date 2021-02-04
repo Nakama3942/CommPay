@@ -1,67 +1,92 @@
 #include <iostream>
+#include <cstdio>
 using namespace std;
 
+/*class tariff
+{
+public:
+    
+};*/
 class payment
 {
 public:
+    /*
+    1 коэффициент - тариф за квартплату
+    2 - за электричество до 100 кВт
+    3 - за электричество от 100 кВт
+    4 - за газ
+    5 - за холодную воду
+    6 - за гарячую воду
+    7 - за отопление
+    */
+    float coefficient[7] = {};
+    int KodValut;
     void Rent()
     {
         cout << "\r\nКвартплата\r\n\r\nПлощадь квартиры: ";
         cin >> KvartPlat;
         cout << "\r\nКоличество проживающих: ";
         cin >> Zhylci;
-        //?float PlatKvart = Zhylci * KvartPlat * g_KoefKvartPlat;
-        //?cout << "\r\nСумма к оплате - " << PlatKvart << "UAH. \r\n";
-        /*if (g_KodValut == 100)
-        {
-            printf("\r\nСумма к оплате - %f RUB. \r\n", PlatKvart);
-        }
-        else if (g_KodValut == 101)
-        {
-            printf("\r\nСумма к оплате - %f UAH. \r\n", PlatKvart);
-        }
-        else if (g_KodValut == 102)
-        {
-            printf("\r\nСумма к оплате - %f BYN. \r\n", PlatKvart);
-        }*/
+        float PlatKvart = Zhylci * KvartPlat * coefficient[0];
+        sum(PlatKvart);
     }
     void Electricity()
     {
-        cout << "---";
+        cout << "\r\nЭлектричество\r\n\r\nКоличество кВт/час, использованных за месяц: ";
+        cin >> Electro;
+        if (Electro < 100)
+        {
+            Electro *= coefficient[1];
+            sum(Electro);
+        }
+        else if (Electro >= 100)
+        {
+            Electro *= coefficient[2];
+            sum(Electro);
+        }
     }
     void Gas()
     {
-        cout << "---";
-    }
-    void HotWater()
-    {
-        cout << "---";
+        cout << "\r\nГаз\r\n\r\nКоличество кубометров, использованных за месяц: ";
+        cin >> Gaz;
+        Gaz *= coefficient[3];
+        sum(Gaz);
     }
     void ColdWater()
     {
-        cout << "---";
+        cout << "\r\nХолодная вода\r\n\r\nКоличество кубометров, использованных за месяц: ";
+        cin >> HolVoda;
+        HolVoda *= coefficient[4];
+        sum(HolVoda);
+    }
+    void HotWater()
+    {
+        cout << "\r\nГорячая вода\r\n\r\nКоличество кубометров, использованных за месяц: ";
+        cin >> GarVoda;
+        GarVoda = GarVoda * coefficient[5];
+        sum(GarVoda);
     }
     void Heating()
     {
-        cout << "---";
+        cout << "\r\nОтопление\r\n\r\nОбщая площадь квартиры: ";
+        cin >> Otopl;
+        Otopl *= coefficient[6];
+        sum(Otopl);
+    }
+    void sum(float summa)
+    {
+        cout << "\nСумма к оплате - " << summa << " UAH.\n";
+        /*if (tarcoef.KodValut == 100)
+            cout << "\nСумма к оплате - " << summa << " RUB.\n";
+        else if (tarcoef.KodValut == 101)
+            cout << "\nСумма к оплате - " << summa << " UAH.\n";
+        else if (tarcoef.KodValut == 102)
+            cout << "\nСумма к оплате - " << summa << " BYN.\n";*/
     }
 
 private:
     int Zhylci;
     float KvartPlat, Electro, Gaz, GarVoda, HolVoda, Otopl;
-};
-class tariff
-{
-public:
-    float coefficient[7] = {};
-    /*float g_KoefKvartPlat;
-    float g_KoefElectroMensh;
-    float g_KoefElectroBolsh;
-    float g_KoefGaz;
-    float g_KoefGarVoda;
-    float g_KoefHolVoda;
-    float g_KoefOtopl;
-    int g_KodValut;*/
 };
 class entry
 {
@@ -79,8 +104,8 @@ public:
         cout << "   1   Квартплата   \r\n";
         cout << "   2   Электричество   \r\n";
         cout << "   3   Газ   \r\n";
-        cout << "   4   Горячая вода   \r\n";
-        cout << "   5   Холодная вода   \r\n";
+        cout << "   4   Холодная вода   \r\n";
+        cout << "   5   Гарячая вода   \r\n";
         cout << "   6   Отопление   \r\n";
         cout << "___________________________\r\n";
         cout << "   9   Изменить валюту   \r\n";
@@ -92,7 +117,7 @@ public:
 class check
 {
 public:
-    void outlet()
+    void outlet(payment pay)
     {
         bool ProverVybKoef = 0;
         do
@@ -102,7 +127,7 @@ public:
             {
             case 'a':
                 ProverVybKoef = 0;
-                Admin();
+                //!Admin();
                 exit(0);
                 break;
             case '0':
@@ -113,31 +138,31 @@ public:
                 break;
             case '1':
                 ProverVybKoef = 0;
-                //!catager(VybKoef);
+                pay.Rent();
                 break;
             case '2':
                 ProverVybKoef = 0;
-                //!catager(VybKoef);
+                pay.Electricity();
                 break;
             case '3':
                 ProverVybKoef = 0;
-                //!catager(VybKoef);
+                pay.Gas();
                 break;
             case '4':
                 ProverVybKoef = 0;
-                //!catager(VybKoef);
+                pay.ColdWater();
                 break;
             case '5':
                 ProverVybKoef = 0;
-                //!catager(VybKoef);
+                pay.HotWater();
                 break;
             case '6':
                 ProverVybKoef = 0;
-                //!catager(VybKoef);
+                pay.Heating();
                 break;
             case '9':
                 ProverVybKoef = 0;
-                IzmenValut();
+                //!IzmenValut();
                 exit(0);
                 break;
             default:
@@ -175,11 +200,6 @@ private:
     char VybKoef, Vyh;
 };
 /*
-void catager()
-{
-    cout << "---";
-}
-*/
 void IzmenValut()
 {
     cout << "---";
@@ -189,11 +209,17 @@ void Admin()
 {
     cout << "---";
 }
-
+*/
 int main()
 {
     entry intro;
+    payment pay;
+    check provka;
     intro.instruction();
     intro.rate();
+    FILE *coef;
+    coef = fopen("Options.txt", "r");
+    fscanf(coef, "%f %f %f %f %f %f %f %i", &pay.coefficient[0], &pay.coefficient[1], &pay.coefficient[2], &pay.coefficient[3], &pay.coefficient[4], &pay.coefficient[5], &pay.coefficient[6], &pay.KodValut);
+    provka.outlet(pay);
     return 0;
 }
