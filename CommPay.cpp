@@ -1,13 +1,7 @@
 #include <iostream>
-#include <cstdio>
 using namespace std;
 
-/*class tariff
-{
-public:
-    
-};*/
-class payment
+class tariff
 {
 public:
     /*
@@ -21,67 +15,76 @@ public:
     */
     float coefficient[7] = {};
     int KodValut;
-    void Rent()
+};
+class payment
+{
+public:
+    void Rent(float Plata, int Valuta)
     {
         cout << "\r\nКвартплата\r\n\r\nПлощадь квартиры: ";
         cin >> KvartPlat;
         cout << "\r\nКоличество проживающих: ";
         cin >> Zhylci;
-        float PlatKvart = Zhylci * KvartPlat * coefficient[0];
-        sum(PlatKvart);
+        float PlatKvart = Zhylci * KvartPlat * Plata;
+        sum(PlatKvart, Valuta);
     }
-    void Electricity()
+    void Electricity(float PlataDo, float PlataBolshe, int Valuta)
     {
         cout << "\r\nЭлектричество\r\n\r\nКоличество кВт/час, использованных за месяц: ";
         cin >> Electro;
         if (Electro < 100)
         {
-            Electro *= coefficient[1];
-            sum(Electro);
+            Electro *= PlataDo;
+            sum(Electro, Valuta);
         }
         else if (Electro >= 100)
         {
-            Electro *= coefficient[2];
-            sum(Electro);
+            Electro *= PlataBolshe;
+            sum(Electro, Valuta);
         }
     }
-    void Gas()
+    void Gas(float Plata, int Valuta)
     {
         cout << "\r\nГаз\r\n\r\nКоличество кубометров, использованных за месяц: ";
         cin >> Gaz;
-        Gaz *= coefficient[3];
-        sum(Gaz);
+        Gaz *= Plata;
+        sum(Gaz, Valuta);
     }
-    void ColdWater()
+    void ColdWater(float Plata, int Valuta)
     {
         cout << "\r\nХолодная вода\r\n\r\nКоличество кубометров, использованных за месяц: ";
         cin >> HolVoda;
-        HolVoda *= coefficient[4];
-        sum(HolVoda);
+        HolVoda *= Plata;
+        sum(HolVoda, Valuta);
     }
-    void HotWater()
+    void HotWater(float Plata, int Valuta)
     {
         cout << "\r\nГорячая вода\r\n\r\nКоличество кубометров, использованных за месяц: ";
         cin >> GarVoda;
-        GarVoda = GarVoda * coefficient[5];
-        sum(GarVoda);
+        GarVoda = GarVoda * Plata;
+        sum(GarVoda, Valuta);
     }
-    void Heating()
+    void Heating(float Plata, int Valuta)
     {
         cout << "\r\nОтопление\r\n\r\nОбщая площадь квартиры: ";
         cin >> Otopl;
-        Otopl *= coefficient[6];
-        sum(Otopl);
+        Otopl *= Plata;
+        sum(Otopl, Valuta);
     }
-    void sum(float summa)
+    void sum(float summa, int Valuta)
     {
-        cout << "\nСумма к оплате - " << summa << " UAH.\n";
-        /*if (tarcoef.KodValut == 100)
-            cout << "\nСумма к оплате - " << summa << " RUB.\n";
-        else if (tarcoef.KodValut == 101)
-            cout << "\nСумма к оплате - " << summa << " UAH.\n";
-        else if (tarcoef.KodValut == 102)
-            cout << "\nСумма к оплате - " << summa << " BYN.\n";*/
+        switch (Valuta)
+        {
+        case 100:
+            cout << "\nСумма к оплате - " << summa << " RUB.\n\n";
+            break;
+        case 101:
+            cout << "\nСумма к оплате - " << summa << " UAH.\n\n";
+            break;
+        case 102:
+            cout << "\nСумма к оплате - " << summa << " BYN.\n\n";
+            break;
+        }
     }
 
 private:
@@ -113,17 +116,62 @@ public:
         cout << "Выберите форму расчёта   \r\n";
         cout << "___________________________\r\n";
     }
+    void ending()
+    {
+        do
+        {
+            cout << "Будете продолжать расчёты (1/0) ?\r\n";
+            cin >> ext;
+            switch (ext)
+            {
+            case '1':
+                VyhodIzProg = 0;
+                break;
+            case '0':
+                cout << "\n\nПриложение закрывается.\n\n";
+                cin.get();
+                cin.get();
+                exit(0);
+            default:
+                VyhodIzProg = 1;
+                cout << "\r\nОшибка в ответе. Повторите попытку: ";
+                break;
+            }
+        } while (VyhodIzProg == 1);
+    }
+
+private:
+    char ext;
+    bool VyhodIzProg = 0;
+};
+class IzmenValut
+{
+public:
+    void IzmenValue(FILE *RedactValut)
+    {
+        int RValut;
+        cout << "RUB = 100; UAH = 101; BYN = 102";
+        cout << "\nУкажите новую валюту: ";
+        cin >> RValut;
+        fseek(RedactValut, 42, SEEK_SET);
+        fprintf(RedactValut, "%i", RValut);
+        cout << "\r\n\r\nВалюта изменена! Для сохранения настроек приложение нужно перезагрузить.";
+        cout << "\r\nПосле закрытия заново откройте приложение.\n\n";
+        cin.get();
+        //?Я заметил, что у меня после изменения валюты само содержимое файла вообще не меняется (я проверял через шестнадцатеричный редактор), однако несмотря на это программа всё равно ведёт себя так, словно содержимое файла изменилось. Значит, всё работает правильно, однако моя система неправильно отображает содержимое файла-хранилища
+    }
 };
 class check
 {
 public:
-    void outlet(payment pay)
+    void outlet(tariff coef, FILE *RedactValut)
     {
-        bool ProverVybKoef = 0;
+        payment pay;
+        IzmenValut NewValut;
         do
         {
-            cin >> VybKoef;
-            switch (VybKoef)
+            cin >> ChosenCoef;
+            switch (ChosenCoef)
             {
             case 'a':
                 ProverVybKoef = 0;
@@ -138,31 +186,31 @@ public:
                 break;
             case '1':
                 ProverVybKoef = 0;
-                pay.Rent();
+                pay.Rent(coef.coefficient[0], coef.KodValut);
                 break;
             case '2':
                 ProverVybKoef = 0;
-                pay.Electricity();
+                pay.Electricity(coef.coefficient[1], coef.coefficient[2], coef.KodValut);
                 break;
             case '3':
                 ProverVybKoef = 0;
-                pay.Gas();
+                pay.Gas(coef.coefficient[3], coef.KodValut);
                 break;
             case '4':
                 ProverVybKoef = 0;
-                pay.ColdWater();
+                pay.ColdWater(coef.coefficient[4], coef.KodValut);
                 break;
             case '5':
                 ProverVybKoef = 0;
-                pay.HotWater();
+                pay.HotWater(coef.coefficient[5], coef.KodValut);
                 break;
             case '6':
                 ProverVybKoef = 0;
-                pay.Heating();
+                pay.Heating(coef.coefficient[6], coef.KodValut);
                 break;
             case '9':
                 ProverVybKoef = 0;
-                //!IzmenValut();
+                NewValut.IzmenValue(RedactValut);
                 exit(0);
                 break;
             default:
@@ -172,39 +220,12 @@ public:
             }
         } while (ProverVybKoef == 1);
     }
-    void ending()
-    {
-        bool VyhodIzProg = 0;
-        do
-        {
-            cout << "Будете продолжать расчёты (1/0) ?\r\n";
-            cin >> Vyh;
-            switch (Vyh)
-            {
-            case '1':
-                VyhodIzProg = 0;
-                break;
-            case '0':
-                cout << "\n\nПриложение закрывается. ";
-                cin.get();
-                exit(0);
-            default:
-                VyhodIzProg = 1;
-                cout << "\r\nОшибка в ответе. Повторите попытку: ";
-                break;
-            }
-        } while (VyhodIzProg == 1);
-    }
 
 private:
-    char VybKoef, Vyh;
+    bool ProverVybKoef = 0;
+    char ChosenCoef;
 };
 /*
-void IzmenValut()
-{
-    cout << "---";
-}
-
 void Admin()
 {
     cout << "---";
@@ -213,13 +234,18 @@ void Admin()
 int main()
 {
     entry intro;
-    payment pay;
     check provka;
-    intro.instruction();
-    intro.rate();
+    tariff tarcoef;
     FILE *coef;
-    coef = fopen("Options.txt", "r");
-    fscanf(coef, "%f %f %f %f %f %f %f %i", &pay.coefficient[0], &pay.coefficient[1], &pay.coefficient[2], &pay.coefficient[3], &pay.coefficient[4], &pay.coefficient[5], &pay.coefficient[6], &pay.KodValut);
-    provka.outlet(pay);
+    coef = fopen("Options.txt", "r+");
+    fscanf(coef, "%f %f %f %f %f %f %f %i", &tarcoef.coefficient[0], &tarcoef.coefficient[1], &tarcoef.coefficient[2], &tarcoef.coefficient[3], &tarcoef.coefficient[4], &tarcoef.coefficient[5], &tarcoef.coefficient[6], &tarcoef.KodValut);
+    for (;;)
+    {
+        intro.instruction();
+        intro.rate();
+        provka.outlet(tarcoef, coef);
+        intro.ending();
+    }
+    fclose(coef);
     return 0;
 }
