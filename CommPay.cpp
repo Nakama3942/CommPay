@@ -161,13 +161,149 @@ public:
         //?Я заметил, что у меня после изменения валюты само содержимое файла вообще не меняется (я проверял через шестнадцатеричный редактор), однако несмотря на это программа всё равно ведёт себя так, словно содержимое файла изменилось. Значит, всё работает правильно, однако моя система неправильно отображает содержимое файла-хранилища
     }
 };
+class Admin
+{
+public:
+    void method(FILE *RedactCoef)
+    {
+        do
+        {
+            do
+            {
+                cout << "\nВыберите, какой коэффициент исправить: \n";
+                cin >> VyborIzmenKoef;
+                switch (VyborIzmenKoef)
+                {
+                case 1:
+                    ProverVyborIzmenKoef = 0;
+                    cout << "\nУкажите новый коэффициент: ";
+                    cin >> ZamenZnach;
+                    fseek(RedactCoef, 0, SEEK_SET);           //Сносит курсор на первый символ в файле
+                    fprintf(RedactCoef, "%5.2f", ZamenZnach); //Записывает считанное значение в файл на указанную позицию
+                    ext();
+                    break;
+                case 2:
+                    ProverVyborIzmenKoef = 0;
+                    cout << "\nУкажите - изменение коэффициента какого диапазоне будет происходить: до 100 (укажите 99) или больше (укажите 999): ";
+                    do
+                    {
+                        cin >> VyborDiapazon;
+                        switch (VyborDiapazon)
+                        {
+                        case 99:
+                            ProverVyborDiapazon = 0;
+                            cout << "\nУкажите новый коэффициент: ";
+                            cin >> ZamenZnach;
+                            fseek(RedactCoef, 6, SEEK_SET);
+                            fprintf(RedactCoef, "%5.2f", ZamenZnach);
+                            ext();
+                            break;
+                        case 999:
+                            ProverVyborDiapazon = 0;
+                            cout << "\nУкажите новый коэффициент: ";
+                            cin >> ZamenZnach;
+                            fseek(RedactCoef, 12, SEEK_SET);
+                            fprintf(RedactCoef, "%5.2f", ZamenZnach);
+                            ext();
+                            break;
+                        default:
+                            ProverVyborDiapazon = 1;
+                            cout << "\r\nОшибка в ответе. Повторите попытку: ";
+                            break;
+                        }
+                    } while (ProverVyborDiapazon == 1);
+                    break;
+                case 3:
+                    ProverVyborIzmenKoef = 0;
+                    cout << "\nУкажите новый коэффициент: ";
+                    cin >> ZamenZnach;
+                    fseek(RedactCoef, 18, SEEK_SET);
+                    fprintf(RedactCoef, "%5.2f", ZamenZnach);
+                    ext();
+                    break;
+                case 4:
+                    ProverVyborIzmenKoef = 0;
+                    cout << "\nУкажите новый коэффициент: ";
+                    cin >> ZamenZnach;
+                    fseek(RedactCoef, 24, SEEK_SET);
+                    fprintf(RedactCoef, "%5.2f", ZamenZnach);
+                    ext();
+                    break;
+                case 5:
+                    ProverVyborIzmenKoef = 0;
+                    cout << "\nУкажите новый коэффициент: ";
+                    cin >> ZamenZnach;
+                    fseek(RedactCoef, 30, SEEK_SET);
+                    fprintf(RedactCoef, "%5.2f", ZamenZnach);
+                    ext();
+                    break;
+                case 6:
+                    ProverVyborIzmenKoef = 0;
+                    cout << "\nУкажите новый коэффициент: ";
+                    cin >> ZamenZnach;
+                    fseek(RedactCoef, 36, SEEK_SET);
+                    fprintf(RedactCoef, "%5.2f", ZamenZnach);
+                    ext();
+                    break;
+                default:
+                    ProverVyborIzmenKoef = 1;
+                    cout << "\r\nОшибка в ответе. Повторите попытку.";
+                    break;
+                }
+            } while (ProverVyborIzmenKoef == 1);
+        } while (VyhodIzAdmin == 1);
+    }
+    void ext()
+    {
+        cout << "Значение изменено! Хотите продолжить редактирование?";
+        do
+        {
+            cin >> AdminWork;
+            switch (AdminWork)
+            {
+            case '1':
+                ProverVyhodIzCase1 = 0;
+                VyhodIzAdmin = 1;
+                break;
+            case '0':
+                ProverVyhodIzCase1 = 0;
+                VyhodIzAdmin = 0;
+                break;
+            default:
+                ProverVyhodIzCase1 = 1;
+                cout << "\r\nОшибка в ответе. Повторите попытку: ";
+                break;
+            }
+        } while (ProverVyhodIzCase1 == 1);
+    }
+    void greeting(int mode)
+    {
+        switch (mode)
+        {
+        case 1:
+            cout << "\r\n\r\n\r\n   _Режим Администратора_   \r\n\r\n\r\n";
+            break;
+        case 0:
+            cout << "\r\nДля того, чтобы изменения вступили в силу - нужна перезагрузка приложения.\r\nПосле завершиние редактирования приложение закроется. Для работы заново откройте его.\r\n\r\n\r\nРабота Администратора завершена!\r\n\r\n\r\n";
+            cin.get();
+            break;
+        }
+    }
+
+private:
+    int VyborIzmenKoef, VyborDiapazon;
+    float ZamenZnach;
+    bool VyhodIzAdmin = 0, ProverVyborIzmenKoef = 0, ProverVyhodIzCase1 = 0, ProverVyborDiapazon = 0;
+    char AdminWork;
+};
 class check
 {
 public:
-    void outlet(tariff coef, FILE *RedactValut)
+    void outlet(tariff coef, FILE *Redactor)
     {
         payment pay;
         IzmenValut NewValut;
+        Admin dmn;
         do
         {
             cin >> ChosenCoef;
@@ -175,7 +311,9 @@ public:
             {
             case 'a':
                 ProverVybKoef = 0;
-                //!Admin();
+                dmn.greeting(1);
+                dmn.method(Redactor);
+                dmn.greeting(0);
                 exit(0);
                 break;
             case '0':
@@ -210,7 +348,7 @@ public:
                 break;
             case '9':
                 ProverVybKoef = 0;
-                NewValut.IzmenValue(RedactValut);
+                NewValut.IzmenValue(Redactor);
                 exit(0);
                 break;
             default:
@@ -225,19 +363,14 @@ private:
     bool ProverVybKoef = 0;
     char ChosenCoef;
 };
-/*
-void Admin()
-{
-    cout << "---";
-}
-*/
+
 int main()
 {
     entry intro;
     check provka;
     tariff tarcoef;
     FILE *coef;
-    coef = fopen("Options.cnf", "r+");
+    coef = fopen("Options.txt", "r+");
     fscanf(coef, "%f %f %f %f %f %f %f %i", &tarcoef.coefficient[0], &tarcoef.coefficient[1], &tarcoef.coefficient[2], &tarcoef.coefficient[3], &tarcoef.coefficient[4], &tarcoef.coefficient[5], &tarcoef.coefficient[6], &tarcoef.KodValut);
     for (;;)
     {
