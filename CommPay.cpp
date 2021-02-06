@@ -237,7 +237,7 @@ int main()
     check provka;
     tariff tarcoef;
     FILE *coef;
-    coef = fopen("Options.txt", "r+");
+    coef = fopen("Options.cnf", "r+");
     fscanf(coef, "%f %f %f %f %f %f %f %i", &tarcoef.coefficient[0], &tarcoef.coefficient[1], &tarcoef.coefficient[2], &tarcoef.coefficient[3], &tarcoef.coefficient[4], &tarcoef.coefficient[5], &tarcoef.coefficient[6], &tarcoef.KodValut);
     for (;;)
     {
