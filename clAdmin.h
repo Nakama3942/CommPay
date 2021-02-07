@@ -13,8 +13,8 @@ public:
             do
             {
                 cout << "\nВыберите, какой коэффициент исправить: \n";
-                cin >> VyborIzmenKoef;
-                switch (VyborIzmenKoef)
+                cin >> choise[0];
+                switch (choise[0])
                 {
                 case 1:
                     proc(RedactCoef, 0);
@@ -24,25 +24,25 @@ public:
                     cout << "\nУкажите - изменение коэффициента какого диапазоне будет происходить: до 100 (укажите 99) или больше (укажите 999): ";
                     do
                     {
-                        cin >> VyborDiapazon;
-                        switch (VyborDiapazon)
+                        cin >> choise[1];
+                        switch (choise[1])
                         {
                         case 99:
-                            ProverVyborDiapazon = 0;
+                            revision[3] = 0;
                             proc(RedactCoef, 6);
                             ext();
                             break;
                         case 999:
-                            ProverVyborDiapazon = 0;
+                            revision[3] = 0;
                             proc(RedactCoef, 12);
                             ext();
                             break;
                         default:
-                            ProverVyborDiapazon = 1;
+                            revision[3] = 1;
                             cout << "\r\nОшибка в ответе. Повторите попытку: ";
                             break;
                         }
-                    } while (ProverVyborDiapazon == 1);
+                    } while (revision[3] == 1);
                     break;
                 case 3:
                     proc(RedactCoef, 18);
@@ -61,16 +61,16 @@ public:
                     ext();
                     break;
                 default:
-                    ProverVyborIzmenKoef = 1;
+                    revision[1] = 1;
                     cout << "\r\nОшибка в ответе. Повторите попытку.";
                     break;
                 }
-            } while (ProverVyborIzmenKoef == 1);
-        } while (VyhodIzAdmin == 1);
+            } while (revision[1] == 1);
+        } while (revision[0] == 1);
     }
     void proc(FILE *RedactCoef, int step)
     {
-        ProverVyborIzmenKoef = 0;
+        revision[1] = 0;
         cout << "\nУкажите новый коэффициент: ";
         cin >> ZamenZnach;
         fseek(RedactCoef, step, SEEK_SET);        //Сносит курсор на первый символ в файле
@@ -85,19 +85,19 @@ public:
             switch (AdminWork)
             {
             case '1':
-                ProverVyhodIzCase1 = 0;
-                VyhodIzAdmin = 1;
+                revision[2] = 0;
+                revision[0] = 1;
                 break;
             case '0':
-                ProverVyhodIzCase1 = 0;
-                VyhodIzAdmin = 0;
+                revision[2] = 0;
+                revision[0] = 0;
                 break;
             default:
-                ProverVyhodIzCase1 = 1;
+                revision[2] = 1;
                 cout << "\r\nОшибка в ответе. Повторите попытку: ";
                 break;
             }
-        } while (ProverVyhodIzCase1 == 1);
+        } while (revision[2] == 1);
     }
     void greeting(int mode)
     {
@@ -114,10 +114,16 @@ public:
     }
 
 private:
-    int VyborIzmenKoef, VyborDiapazon;
-    float ZamenZnach;
-    bool VyhodIzAdmin = 0, ProverVyborIzmenKoef = 0, ProverVyhodIzCase1 = 0, ProverVyborDiapazon = 0;
+    //Первое значение - Выбор изменения коэффициента
+    //Второе - Выбор диапазона (для электричества)
+    int choise[2] = {};
+    //Первое значение - Выход из Администрирования
+    //Второе - Проверка выбора изменения коэффициента
+    //Третье - Проверка выхода из кейса
+    //Четвёртое - Проверка выбора диапазона
+    bool revision[4] = {0, 0, 0, 0};
     char AdminWork;
+    float ZamenZnach;
 };
 
 #endif

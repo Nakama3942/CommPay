@@ -9,54 +9,54 @@ public:
     void Rent(float Plata, int Valuta)
     {
         cout << "\r\nКвартплата\r\n\r\nПлощадь квартиры: ";
-        cin >> KvartPlat;
+        cin >> render[0];
         cout << "\r\nКоличество проживающих: ";
         cin >> Zhylci;
-        float PlatKvart = Zhylci * KvartPlat * Plata;
+        float PlatKvart = Zhylci * render[0] * Plata;
         sum(PlatKvart, Valuta);
     }
     void Electricity(float PlataDo, float PlataBolshe, int Valuta)
     {
         cout << "\r\nЭлектричество\r\n\r\nКоличество кВт/час, использованных за месяц: ";
-        cin >> Electro;
-        if (Electro < 100)
+        cin >> render[1];
+        if (render[1] < 100)
         {
-            Electro *= PlataDo;
-            sum(Electro, Valuta);
+            render[1] *= PlataDo;
+            sum(render[1], Valuta);
         }
-        else if (Electro >= 100)
+        else if (render[1] >= 100)
         {
-            Electro *= PlataBolshe;
-            sum(Electro, Valuta);
+            render[1] *= PlataBolshe;
+            sum(render[1], Valuta);
         }
     }
     void Gas(float Plata, int Valuta)
     {
         cout << "\r\nГаз\r\n\r\nКоличество кубометров, использованных за месяц: ";
-        cin >> Gaz;
-        Gaz *= Plata;
-        sum(Gaz, Valuta);
+        cin >> render[2];
+        render[2] *= Plata;
+        sum(render[2], Valuta);
     }
     void ColdWater(float Plata, int Valuta)
     {
         cout << "\r\nХолодная вода\r\n\r\nКоличество кубометров, использованных за месяц: ";
-        cin >> HolVoda;
-        HolVoda *= Plata;
-        sum(HolVoda, Valuta);
+        cin >> render[3];
+        render[3] *= Plata;
+        sum(render[3], Valuta);
     }
     void HotWater(float Plata, int Valuta)
     {
         cout << "\r\nГорячая вода\r\n\r\nКоличество кубометров, использованных за месяц: ";
-        cin >> GarVoda;
-        GarVoda = GarVoda * Plata;
-        sum(GarVoda, Valuta);
+        cin >> render[4];
+        render[4] *= Plata;
+        sum(render[4], Valuta);
     }
     void Heating(float Plata, int Valuta)
     {
         cout << "\r\nОтопление\r\n\r\nОбщая площадь квартиры: ";
-        cin >> Otopl;
-        Otopl *= Plata;
-        sum(Otopl, Valuta);
+        cin >> render[5];
+        render[5] *= Plata;
+        sum(render[5], Valuta);
     }
     void sum(float summa, int Valuta)
     {
@@ -75,8 +75,14 @@ public:
     }
 
 private:
+    //Первое значение - Квартплата
+    //Второе - Плата за электричество
+    //Третье - За газ
+    //Четвёртое - За холодную воду
+    //Пятое - За гарячую воду
+    //Шестое - За отопление
+    float render[6] = {};
     int Zhylci;
-    float KvartPlat, Electro, Gaz, GarVoda, HolVoda, Otopl;
 };
 
 #endif
