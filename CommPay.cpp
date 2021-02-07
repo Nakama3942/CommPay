@@ -1,6 +1,7 @@
 #include <iostream>
 #include "cltariff.h"
 #include "clentry.h"
+#include "clAdmin.h"
 #include "clcheck.h"
 using namespace std;
 
