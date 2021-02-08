@@ -1,8 +1,5 @@
 #include <iostream>
-#include "cltariff.h"
-#include "clentry.h"
-#include "clAdmin.h"
-#include "clcheck.h"
+#include "classes.h"
 using namespace std;
 
 int main()
