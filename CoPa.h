@@ -1,5 +1,5 @@
-#ifndef classes
-#define classes
+#ifndef CoPa
+#define CoPa
 #include <iostream>
 using namespace std;
 
