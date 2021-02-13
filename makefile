@@ -14,23 +14,30 @@ CONF=/usr/local/share/Options.conf
 
 all: CommPay
 
-clean:
-	@rm CommPay *.o
-
 CommPay: libCoPa.so CommPay.o
 	@ln -s $(LIBRARY) $(LINK)
 	@$(CC) -no-pie -o CommPay CommPay.o -lCoPa -Wl,-rpath,.
+	@echo Программа скомпилирована!
 	@cp Value.txt $(CONF)
+	@echo Настроены предустановки!
 
 libCoPa.so: $(SOURCE)
 	@$(CC) $(CFLAGS) -fPIC $(SOURCE)
 	@$(CC) -shared -o $(LIBRARY) -Wl,-soname,libCoPa.so.0.1 *.o
+	@echo Собрана библиотека CoPa.so!
 
 CommPay.o: CommPay.cpp
 	@$(CC) $(CFLAGS) CommPay.cpp
+	@echo Собран исполняемый файл программы!
 
 install:
 	@install ./CommPay /usr/local/bin
+	@echo Программа установлена!
+
+clean:
+	@rm CommPay *.o
+	@echo Посредники очищены!
 
 uninstall:
 	@rm -rf $(CONF) $(LIBRARY) $(LINK) $(EXECUTIVE)
+	@echo программа удалена!
