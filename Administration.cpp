@@ -1,5 +1,5 @@
 //Библиотека, контролирующая администрирование - изменение тарифов и валюты
-#include "classes.h"
+#include "CoPa.h"
 
 //Функция, меняющая валюту
 void Admin::ChangeCurrency(FILE *RedactValut)

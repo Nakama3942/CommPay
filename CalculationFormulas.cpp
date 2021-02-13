@@ -1,5 +1,5 @@
 //Библиотека, которая принимает пользовательскую информацию и по формулам считает и выводит ответ
-#include "classes.h"
+#include "CoPa.h"
 
 //Считает плату за квартиру
 void payment::Rent(float Plata, int Valuta)

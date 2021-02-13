@@ -1,5 +1,5 @@
 //Библиотека общения с пользователем
-#include "classes.h"
+#include "CoPa.h"
 
 //Функция приветствия
 void entry::instruction()
