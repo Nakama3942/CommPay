@@ -15,8 +15,20 @@ public:
     6 - за гарячую воду
     7 - за отопление
     */
-    float coefficient[7] = {};
-    int KodValut;
+    float coefficient[7] = {};                  //Хранит коэффициенты тарифов
+    char LettKeyVal[3] = {};                    //Хранит буквенную кодировку валюты пользователся
+    void WorkStorage(FILE *Coef, FILE *Valuta); //Метод, запускающий запоминание
+
+private:
+    int KeyValuta;                                                 //Хранит чисельную кодировку валюты пользователя
+    int NumeralKeyValuta[134] = {};                                //Хранит чисельную кодировку валют из ISO4217-modified
+    char LetterKeyValuta[3][134] = {};                             //Хранит буквенную кодировку валют из ISO4217-modified
+    void SearchVal();                                              //Метод запоминания буквенной кодировки пользователя
+    void JobsWithMemory(FILE *Coef, FILE *Valuta);                 //Метод, организовывающий запоминание
+    void memfsfsC(FILE *Coef, int i);                              //Метод запоминания тарифов в coefficient
+    void memkeyC(FILE *Coef, int i);                               //Метод запоминания валюты пользователся
+    void memfsfsNV(FILE *Valuta, int i);                           //Метод запоминания числовой кодировки
+    void memfsfsLV(FILE *Valuta, int i, int massone, int masstwo); //Метод запоминания буквенной кодировки
 };
 class entry
 {
@@ -53,13 +65,13 @@ private:
 class payment
 {
 public:
-    void Rent(float Plata, int Valuta);
-    void Electricity(float PlataDo, float PlataBolshe, int Valuta);
-    void Gas(float Plata, int Valuta);
-    void ColdWater(float Plata, int Valuta);
-    void HotWater(float Plata, int Valuta);
-    void Heating(float Plata, int Valuta);
-    void sum(float summa, int Valuta);
+    float Rent(float Plata);
+    float Electricity(float PlataDo, float PlataBolshe);
+    float Gas(float Plata);
+    float ColdWater(float Plata);
+    float HotWater(float Plata);
+    float Heating(float Plata);
+    void sum(float summa, char LettKeyVal[3]);
 
 private:
     //Первое значение - Квартплата

@@ -3,28 +3,64 @@
 #
 
 CC=g++
-CFLAGS=-Wall -c
-SOURCE=Administration.cpp CalculationFormulas.cpp checks.cpp communication.cpp
+FLAGS=-Wall -c
 EXECUTIVE=/usr/local/bin/CommPay
-LIBRARY=/usr/local/lib/libCoPa.so.0.1
-LINK=/usr/local/lib/libCoPa.so
+
+LIBRARYMEMORY=/usr/local/lib/libMemory.so.0.1
+LIBRARYENTRY=/usr/local/lib/libEntry.so.0.2
+LIBRARYADMIN=/usr/local/lib/libAdmin.so.0.2
+LIBRARYCALC=/usr/local/lib/libCalc.so.0.2
+LIBRARYCHECK=/usr/local/lib/libChecks.so.0.2
+
+LINKMEMORY=/usr/local/lib/libMemory.so
+LINKENTRY=/usr/local/lib/libEntry.so
+LINKADMIN=/usr/local/lib/libAdmin.so
+LINKCALC=/usr/local/lib/libCalc.so
+LINKCHECK=/usr/local/lib/libChecks.so
+
 CONF=/usr/local/share/Options.conf
+ISO=/usr/local/share/Valuta.conf
 
 .PHONY: all clean install uninstall
 
 all: CommPay
 
-CommPay: libCoPa.so CommPay.o
-	@ln -s $(LIBRARY) $(LINK)
-	@$(CC) -no-pie -o CommPay CommPay.o -lCoPa -Wl,-rpath,.
+CommPay: libWorkStorage.so libEntry.so libAdministration.so libCalculation.so libChecks.so CommPay.o
+	@$(CC) -no-pie -o CommPay CommPay.o -L/usr/local/lib -lMemory -lEntry -lChecks -lAdmin -lCalc -Wl,-rpath,.
 	@echo Программа скомпилирована!
 	@cp Value.txt $(CONF)
+	@cp ISO4217-modified.txt $(ISO)
 	@echo Настроены предустановки!
 
-libCoPa.so: $(SOURCE)
-	@$(CC) $(CFLAGS) -fPIC $(SOURCE)
-	@$(CC) -shared -o $(LIBRARY) -Wl,-soname,libCoPa.so.0.1 *.o
-	@echo Собрана библиотека CoPa.so!
+libWorkStorage.so: WorkStorage.cpp
+	@$(CC) $(FLAGS) -fPIC WorkStorage.cpp
+	@$(CC) -shared -o $(LIBRARYMEMORY) -Wl,-soname,libMemory.so.0.1 WorkStorage.o
+	@ln -s $(LIBRARYMEMORY) $(LINKMEMORY)
+	@echo Собрана библиотека Memory.so!
+
+libEntry.so: communication.cpp
+	@$(CC) $(FLAGS) -fPIC communication.cpp
+	@$(CC) -shared -o $(LIBRARYENTRY) -Wl,-soname,libEntry.so.0.2 communication.o
+	@ln -s $(LIBRARYENTRY) $(LINKENTRY)
+	@echo Собрана библиотека Entry.so!
+
+libAdministration.so: Administration.cpp
+	@$(CC) $(FLAGS) -fPIC Administration.cpp
+	@$(CC) -shared -o $(LIBRARYADMIN) -Wl,-soname,libAdmin.so.0.2 Administration.o
+	@ln -s $(LIBRARYADMIN) $(LINKADMIN)
+	@echo Собрана библиотека Admin.so!
+
+libCalculation.so: CalculationFormulas.cpp
+	@$(CC) $(FLAGS) -fPIC CalculationFormulas.cpp
+	@$(CC) -shared -o $(LIBRARYCALC) -Wl,-soname,libCalc.so.0.2 CalculationFormulas.o
+	@ln -s $(LIBRARYCALC) $(LINKCALC)
+	@echo Собрана библиотека Calc.so!
+
+libChecks.so: checks.cpp
+	@$(CC) $(FLAGS) -fPIC checks.cpp
+	@$(CC) -shared -o $(LIBRARYCHECK) -Wl,-soname,libChecks.so.0.2 checks.o
+	@ln -s $(LIBRARYCHECK) $(LINKCHECK)
+	@echo Собрана библиотека Checks.so!
 
 CommPay.o: CommPay.cpp
 	@$(CC) $(CFLAGS) CommPay.cpp
@@ -35,9 +71,11 @@ install:
 	@echo Программа установлена!
 
 clean:
-	@rm CommPay *.o
+	@rm -rf CommPay *.o
 	@echo Посредники очищены!
 
 uninstall:
-	@rm -rf $(CONF) $(LIBRARY) $(LINK) $(EXECUTIVE)
+	@rm -rf $(EXECUTIVE) $(CONF) $(ISO)
+	@rm -rf $(LIBRARYMEMORY) $(LIBRARYENTRY) $(LIBRARYADMIN) $(LIBRARYCALC) $(LIBRARYCHECK)
+	@rm -rf $(LINKMEMORY) $(LINKENTRY) $(LINKADMIN) $(LINKCALC) $(LINKCHECK)
 	@echo программа удалена!

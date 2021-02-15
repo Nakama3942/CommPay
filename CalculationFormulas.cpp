@@ -2,79 +2,60 @@
 #include "CoPa.h"
 
 //Считает плату за квартиру
-void payment::Rent(float Plata, int Valuta)
+float payment::Rent(float Plata)
 {
     cout << "\r\nКвартплата\r\n\r\nПлощадь квартиры: ";
     cin >> render[0];
     cout << "\r\nКоличество проживающих: ";
     cin >> Zhylci;
     float PlatKvart = Zhylci * render[0] * Plata;
-    sum(PlatKvart, Valuta);
+    return PlatKvart;
 }
 //Считает плату за электричество
-void payment::Electricity(float PlataDo, float PlataBolshe, int Valuta)
+float payment::Electricity(float PlataDo, float PlataBolshe)
 {
     cout << "\r\nЭлектричество\r\n\r\nКоличество кВт/час, использованных за месяц: ";
     cin >> render[1];
     if (render[1] < 100)
-    {
         render[1] *= PlataDo;
-        sum(render[1], Valuta);
-    }
-    else if (render[1] >= 100)
-    {
+    else
         render[1] *= PlataBolshe;
-        sum(render[1], Valuta);
-    }
+    return render[1];
 }
 //Считает плату за газ
-void payment::Gas(float Plata, int Valuta)
+float payment::Gas(float Plata)
 {
     cout << "\r\nГаз\r\n\r\nКоличество кубометров, использованных за месяц: ";
     cin >> render[2];
     render[2] *= Plata;
-    sum(render[2], Valuta);
+    return render[2];
 }
 //Считает плату за холодную воду
-void payment::ColdWater(float Plata, int Valuta)
+float payment::ColdWater(float Plata)
 {
     cout << "\r\nХолодная вода\r\n\r\nКоличество кубометров, использованных за месяц: ";
     cin >> render[3];
     render[3] *= Plata;
-    sum(render[3], Valuta);
+    return render[3];
 }
 //Считает плату за гарячую воду
-void payment::HotWater(float Plata, int Valuta)
+float payment::HotWater(float Plata)
 {
     cout << "\r\nГорячая вода\r\n\r\nКоличество кубометров, использованных за месяц: ";
     cin >> render[4];
     render[4] *= Plata;
-    sum(render[4], Valuta);
+    return render[4];
 }
 //Считает плату за отопление
-void payment::Heating(float Plata, int Valuta)
+float payment::Heating(float Plata)
 {
     cout << "\r\nОтопление\r\n\r\nОбщая площадь квартиры: ";
     cin >> render[5];
     render[5] *= Plata;
-    sum(render[5], Valuta);
+    return render[5];
 }
 //Функция выводт результат
-void payment::sum(float summa, int Valuta)
+void payment::sum(float summa, char LettKeyVal[3])
 {
-    switch (Valuta)
-    {
-    case 100:
-        cout << "\nСумма к оплате - " << summa << " RUB.\n\n";
-        break;
-    case 101:
-        cout << "\nСумма к оплате - " << summa << " UAH.\n\n";
-        break;
-    case 102:
-        cout << "\nСумма к оплате - " << summa << " BYN.\n\n";
-        break;
-    default:
-        cout << "\nСумма к оплате - " << summa << " \aother currency.\n\n";
-        break;
-    }
+    cout << "\nСумма к оплате - " << summa << " " << LettKeyVal[0] << LettKeyVal[1] << LettKeyVal[2] << ".\n\n";
 }

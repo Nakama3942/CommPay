@@ -25,27 +25,27 @@ void check::outlet(tariff coef, FILE *Redactor)
             break;
         case '1':
             ProverVybKoef = 0;
-            pay.Rent(coef.coefficient[0], coef.KodValut);
+            pay.sum(pay.Rent(coef.coefficient[0]), coef.LettKeyVal);
             break;
         case '2':
             ProverVybKoef = 0;
-            pay.Electricity(coef.coefficient[1], coef.coefficient[2], coef.KodValut);
+            pay.sum(pay.Electricity(coef.coefficient[1], coef.coefficient[2]), coef.LettKeyVal);
             break;
         case '3':
             ProverVybKoef = 0;
-            pay.Gas(coef.coefficient[3], coef.KodValut);
+            pay.sum(pay.Gas(coef.coefficient[3]), coef.LettKeyVal);
             break;
         case '4':
             ProverVybKoef = 0;
-            pay.ColdWater(coef.coefficient[4], coef.KodValut);
+            pay.sum(pay.ColdWater(coef.coefficient[4]), coef.LettKeyVal);
             break;
         case '5':
             ProverVybKoef = 0;
-            pay.HotWater(coef.coefficient[5], coef.KodValut);
+            pay.sum(pay.HotWater(coef.coefficient[5]), coef.LettKeyVal);
             break;
         case '6':
             ProverVybKoef = 0;
-            pay.Heating(coef.coefficient[6], coef.KodValut);
+            pay.sum(pay.Heating(coef.coefficient[6]), coef.LettKeyVal);
             break;
         case '9':
             ProverVybKoef = 0;

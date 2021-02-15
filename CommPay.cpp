@@ -7,16 +7,19 @@ int main()
     entry intro;
     check provka;
     tariff tarcoef;
-    FILE *coef;
-    coef = fopen("/usr/local/share/Options.conf", "r+");
-    fscanf(coef, "%f %f %f %f %f %f %f %i", &tarcoef.coefficient[0], &tarcoef.coefficient[1], &tarcoef.coefficient[2], &tarcoef.coefficient[3], &tarcoef.coefficient[4], &tarcoef.coefficient[5], &tarcoef.coefficient[6], &tarcoef.KodValut);
+    FILE *Coef;   //Открываю Value.txt
+    FILE *Valuta; //Открываю ISO4217-modified
+    Coef = fopen("/usr/local/share/Options.conf", "r+");
+    Valuta = fopen("/usr/local/share/Valuta.conf", "r");
     for (;;)
     {
-        intro.instruction();
-        intro.rate();
-        provka.outlet(tarcoef, coef);
-        intro.ending();
+        tarcoef.WorkStorage(Coef, Valuta); //Вызываю метод запоминания
+        intro.instruction();               //Вызываю метод, инструктирующий пользователя
+        intro.rate();                      //Вызываю метод сетки КоммПлатежей
+        provka.outlet(tarcoef, Coef);      //Начинаю работу
+        intro.ending();                    //Завершаю работу
     }
-    fclose(coef);
+    fclose(Coef);
+    fclose(Valuta);
     return 0;
 }
