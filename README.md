@@ -1,4 +1,4 @@
-<font size="20">The repository is archived</font> 
+### The repository is archived
 
 [![template](https://img.shields.io/badge/Repository-template-darkred)](https://github.com/Nakama3942/template_rep)
 [![GitHub license](https://img.shields.io/github/license/Nakama3942/CommPay?color=silver&style=flat-square)](https://github.com/Nakama3942/CommPay/blob/main/LICENSE)
